@@ -7,6 +7,7 @@ if os.path.exists(dotenv_path):
 
 from flask_migrate import Migrate, upgrade
 from app import create_app, db
+from app.models import Book, Author, Publisher
 
 
 app = create_app('production')
@@ -15,7 +16,7 @@ migrate = Migrate(app, db)
 
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db)
+    return dict(db=db, book=Book, author=Author, publisher=Publisher)
 
 
 if __name__ == '__main__':
