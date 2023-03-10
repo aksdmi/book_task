@@ -1,0 +1,16 @@
+version: "3.3"
+
+services:
+  book_task-postgres:
+    image: postgres:11-alpine
+    container_name: book_task-postgres
+    restart: unless-stopped
+    ports:
+      - 54322:5432
+    environment:
+      - POSTGRES_DB=book_task
+      - POSTGRES_USER=book_task
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_PORT=5432
+    volumes:
+      - ../postgresql/book_task:/var/lib/postgresql/data
