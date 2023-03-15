@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+{% block title %}Библиотека{% endblock %}
+
+{% block page_content %}
+<div class="publisher-tabs">
+
+    <ul class="publishers">
+        {% for publisher in publishers %}
+        <li class="publisher">
+            <div class="publisher-content">
+                <div class="publisher-name">{{ publisher.name }}</div>
+            </div>
+            <div class="publisher-footer">
+                <a href="{{ url_for('.publishers_edit', id=publisher.id) }}">
+                    <span class="label label-primary">Редактировать</span>
+                </a>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{{ url_for('.publishers_new') }}">
+        <span class="label label-default">Добавить</span>
+    </a>
+</div>
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, '.index') }}
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,8 +1,8 @@
 from flask import request, current_app, render_template, redirect, url_for, flash
 from . import main
 from .. import db
-from ..models import Book
-from . forms import BookForm
+from ..models import Book, Author, Publisher
+from . forms import BookForm, AuthorForm, PublisherForm
 
 
 
@@ -22,18 +22,158 @@ def index():
     books = pagination.items
     return render_template('index.html', form=form, books=books, pagination=pagination)
 
+def insert_update_book(form: BookForm, book: Book, msg: str, endpoint: str):
+    book.title = form.title.data
+    book.year = form.year.data
+    book.authors = []
+    for itm in form.authors.data:
+        book.authors.append(Author.query.get_or_404(itm))
+
+    book.publishers = []
+    for itm in form.publishers.data:
+        book.publishers.append(Publisher.query.get_or_404(itm))
+
+    db.session.add(book)
+    db.session.commit()
+    flash(msg)
+    return redirect(url_for(endpoint))
+
+
+def update_defaults(form: BookForm, book: Book):
+    # authors
+    form.authors.default = []
+    for row in book.authors:
+        form.authors.default.append(row.id)
+
+    # publishers
+    form.publishers.default = []
+    for row in book.publishers:
+        form.publishers.default.append(row.id)
+
+    form.process()
+
+    return form
+
+
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
     book = Book.query.get_or_404(id)
-
     form = BookForm()
+
+    # authors
+    form.authors.choices = []
+    for row in Author.query.order_by(Author.fio.asc()):
+        form.authors.choices.append((row.id, row.fio))
+
+    # publishers
+    form.publishers.choices = []
+    for row in Publisher.query.order_by(Publisher.name.asc()):
+        form.publishers.choices.append((row.id, row.name))
+
     if form.validate_on_submit():
-        book.title = form.title.data
-        book.year = form.year.data
-        db.session.add(book)
-        db.session.commit()
-        flash('The book has been updated.')
-        return redirect(url_for('.index'))
+        return insert_update_book(form, book, 'Данные о книге были обновлены.', '.index')
+
+    form = update_defaults(form, book)
+
     form.title.data = book.title
     form.year.data = book.year
+
     return render_template('edit_book.html', form=form)
+
+@main.route('/new', methods=['GET', 'POST'])
+def new():
+    form = BookForm()
+    book = Book()
+
+    # authors
+    form.authors.choices = []
+    for row in Author.query.order_by(Author.fio.asc()):
+        form.authors.choices.append((row.id, row.fio))
+
+    # publishers
+    form.publishers.choices = []
+    for row in Publisher.query.order_by(Publisher.name.asc()):
+        form.publishers.choices.append((row.id, row.name))
+
+    if form.validate_on_submit():
+        return insert_update_book(form, book, 'Данные о книге были добавлены.', '.index')
+
+    form = update_defaults(form, book)
+
+    return render_template('edit_book.html', form=form)
+
+
+@main.route('/authors', methods=['GET'])
+def authors():
+    authors = Author.query.order_by(Author.fio.asc())
+    return render_template('authors.html', authors=authors)
+
+
+@main.route('/authors/new', methods=['GET', 'POST'])
+def authors_new():
+    form = AuthorForm()
+    if form.validate_on_submit():
+        author = Author()
+        author.fio = form.fio.data
+
+        db.session.add(author)
+        db.session.commit()
+        flash('Добавлен новый автор')
+        return redirect(url_for('.authors'))
+
+    return render_template('edit_author.html', form=form)
+
+@main.route('/authors/edit/<int:id>', methods=['GET', 'POST'])
+def authors_edit(id):
+    author = Author.query.get_or_404(id)
+    form = AuthorForm()
+
+    if form.validate_on_submit():
+        author.fio = form.fio.data
+
+        db.session.add(author)
+        db.session.commit()
+        flash('Обновлен автор')
+        return redirect(url_for('.authors'))
+
+    form.fio.data = author.fio
+
+    return render_template('edit_author.html', form=form)
+
+
+@main.route('/publishers', methods=['GET'])
+def publishers():
+    publishers = Publisher.query.order_by(Publisher.name.asc())
+    return render_template('publishers.html', publishers=publishers)
+
+
+@main.route('/publishers/new', methods=['GET', 'POST'])
+def publishers_new():
+    form = PublisherForm()
+    if form.validate_on_submit():
+        publisher = Publisher()
+        publisher.name = form.name.data
+
+        db.session.add(publisher)
+        db.session.commit()
+        flash('Добавлен новый издатель')
+        return redirect(url_for('.publishers'))
+
+    return render_template('edit_publisher.html', form=form)
+
+@main.route('/publishers/edit/<int:id>', methods=['GET', 'POST'])
+def publishers_edit(id):
+    publisher = Publisher.query.get_or_404(id)
+    form = PublisherForm()
+
+    if form.validate_on_submit():
+        publisher.name = form.name.data
+
+        db.session.add(publisher)
+        db.session.commit()
+        flash('Обновлен издатель')
+        return redirect(url_for('.publishers'))
+
+    form.name.data = publisher.name
+
+    return render_template('edit_publisher.html', form=form)

@@ -21,6 +21,7 @@ class Config:
     FLASKY_COMMENTS_PER_PAGE = 30
     FLASKY_SLOW_DB_QUERY_TIME = 0.5
     # EXPLAIN_TEMPLATE_LOADING = True
+    # WTF_CSRF_ENABLED = False
 
     @staticmethod
     def init_app(app):

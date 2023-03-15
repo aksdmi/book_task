@@ -18,19 +18,39 @@ ul.books li.book {
 ul.books li.book:hover {
     background-color: #f0f0f0;
 }
-div.book-date {
+div.book-year {
     float: right;
 }
-div.book-author {
+div.book-title {
     font-weight: bold;
 }
-div.book-thumbnail {
-    position: absolute;
-}
-div.book-content {
-    margin-left: 48px;
-    min-height: 48px;
-}
 div.book-footer {
+    text-align: right;
+}
+
+div.author-tabs {
+    margin-top: 16px;
+}
+ul.authors {
+    list-style-type: none;
+    padding: 0px;
+    margin: 16px 0px 0px 0px;
+    border-top: 1px solid #e0e0e0;
+}
+div.author-tabs ul.books {
+    margin: 0px;
+    border-top: none;
+}
+ul.authors li.book {
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0;
+}
+ul.authors li.book:hover {
+    background-color: #f0f0f0;
+}
+div.author-fio {
+    font-weight: bold;
+}
+div.author-footer {
     text-align: right;
 }

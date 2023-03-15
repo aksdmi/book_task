@@ -2,14 +2,10 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% import "_macros.html" as macros %}
 
-{% block title %}Flasky{% endblock %}
+{% block title %}Библиотека{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-    <h1>Hello!</h1>
-    <p>Pleased to meet you!</p>
-</div>
-{{ wtf.quick_form(form) }}
+<!--{{ wtf.quick_form(form) }}-->
 <div class="book-tabs">
     {% include '_books.html' %}
 </div>
