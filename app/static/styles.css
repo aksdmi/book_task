@@ -18,8 +18,11 @@ ul.books li.book {
 ul.books li.book:hover {
     background-color: #f0f0f0;
 }
+div.book-publishers {
+    font-weight: bold;
+}
 div.book-year {
-    float: right;
+    font-style: italic;
 }
 div.book-title {
     font-weight: bold;

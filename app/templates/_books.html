@@ -2,6 +2,22 @@
     {% for book in books %}
     <li class="book">
         <div class="book-content">
+            {% if book.publishers %}
+                <div class="book-publishers">
+                    {% for publisher in book.publishers[:-1] %}
+                        {{ publishers.name + ', ' }}
+                    {% endfor %}
+                    {{ book.publishers[-1].name }}
+                </div>
+            {% endif %}
+            {% if book.authors %}
+                <div class="book-authors">
+                    {% for author in book.authors[:-1] %}
+                        {{ author.fio + ', ' }}
+                    {% endfor %}
+                    {{ book.authors[-1].fio }}
+                </div>
+            {% endif %}
             <div class="book-year">{{ book.year }}</div>
             <div class="book-title">{{ book.title }}</div>
             <div class="book-footer">

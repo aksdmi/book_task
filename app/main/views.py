@@ -16,7 +16,7 @@ def index():
     page = request.args.get('page', 1, type=int)
     query = Book.query
     pagination = query.order_by(Book.year.desc()).paginate(
-        page=page, per_page=current_app.config['FLASKY_BOOKS_PER_PAGE'],
+        page=page, per_page=current_app.config['BOOKS_PER_PAGE'],
         error_out=False)
     books = pagination.items
     return render_template('index.html', form=form, books=books, pagination=pagination)
@@ -120,7 +120,7 @@ def authors():
     authors_page = request.args.get('authors_page', 1, type=int)
     query = Author.query
     pagination = query.order_by(Author.fio.asc()).paginate(
-        page=authors_page, per_page=current_app.config['FLASKY_BOOKS_PER_PAGE'],
+        page=authors_page, per_page=current_app.config['BOOKS_PER_PAGE'],
         error_out=False)
     authors = pagination.items
 
@@ -176,7 +176,7 @@ def publishers():
     publishers_page = request.args.get('publishers_page', 1, type=int)
     query = Publisher.query
     pagination = query.order_by(Publisher.name.asc()).paginate(
-        page=publishers_page, per_page=current_app.config['FLASKY_BOOKS_PER_PAGE'],
+        page=publishers_page, per_page=current_app.config['BOOKS_PER_PAGE'],
         error_out=False)
     lpublishers = pagination.items
     return render_template('publishers.html', publishers=lpublishers, pagination=pagination)
