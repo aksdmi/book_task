@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
-{% import "_macros.html" as macros %}
+{% import "_authors_macros.html" as macros %}
 
 {% block title %}Библиотека{% endblock %}
 
@@ -31,7 +31,7 @@
 </div>
 {% if pagination %}
 <div class="pagination">
-    {{ macros.pagination_widget(pagination, '.index') }}
+    {{ macros.pagination_widget(pagination, '.authors') }}
 </div>
 {% endif %}
 

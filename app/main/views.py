@@ -117,8 +117,14 @@ def new():
 
 @main.route('/authors', methods=['GET'])
 def authors():
-    authors = Author.query.order_by(Author.fio.asc())
-    return render_template('authors.html', authors=authors)
+    authors_page = request.args.get('authors_page', 1, type=int)
+    query = Author.query
+    pagination = query.order_by(Author.fio.asc()).paginate(
+        page=authors_page, per_page=current_app.config['FLASKY_BOOKS_PER_PAGE'],
+        error_out=False)
+    authors = pagination.items
+
+    return render_template('authors.html', authors=authors, pagination=pagination)
 
 
 @main.route('/authors/new', methods=['GET', 'POST'])
@@ -167,8 +173,13 @@ def authors_delete(id):
 
 @main.route('/publishers', methods=['GET'])
 def publishers():
-    publishers = Publisher.query.order_by(Publisher.name.asc())
-    return render_template('publishers.html', publishers=publishers)
+    publishers_page = request.args.get('publishers_page', 1, type=int)
+    query = Publisher.query
+    pagination = query.order_by(Publisher.name.asc()).paginate(
+        page=publishers_page, per_page=current_app.config['FLASKY_BOOKS_PER_PAGE'],
+        error_out=False)
+    lpublishers = pagination.items
+    return render_template('publishers.html', publishers=lpublishers, pagination=pagination)
 
 
 @main.route('/publishers/new', methods=['GET', 'POST'])

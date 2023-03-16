@@ -13,9 +13,7 @@ class BookForm(FlaskForm):
     year = IntegerField('Год издания', validators=[DataRequired()])
     authors = SelectMultipleField('Автор(ы)', choices=[], default=[], coerce=int)
     publishers = SelectMultipleField('Издатель(и)', choices=[], default=[], coerce=int)
-    # authors = QuerySelectMultipleField(query_factory=Author.query.all(),
-    #                                    get_pk='id',
-    #                                    get_label='fio')
+
     submit = SubmitField('Сохранить')
 
     def set_author_choices(self, choices_list: list):
