@@ -17,6 +17,9 @@
                 <a href="{{ url_for('.authors_edit', id=author.id) }}">
                     <span class="label label-primary">Редактировать</span>
                 </a>
+                <a href="{{ url_for('.authors_delete', id=author.id) }}">
+                    <span class="label label-primary">Удалить</span>
+                </a>
             </div>
         </li>
         {% endfor %}
