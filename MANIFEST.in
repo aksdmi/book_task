@@ -1,0 +1,7 @@
+recursive-include app/templates *
+recursive-include app/static *
+recursive-include migrations *
+recursive-include requirements *
+include docker-compose.yml
+include library.py
+include config.py
