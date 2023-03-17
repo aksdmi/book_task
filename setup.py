@@ -1,7 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(name='book_task',
-      packages=find_packages(),
+      # packages=find_packages(),
+      packages=['book_task'],
       include_package_data=True,
       version = "1.0.0",
       license = "proprietary",

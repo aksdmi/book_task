@@ -1,7 +1,6 @@
-recursive-include app/templates *
-recursive-include app/static *
-recursive-include migrations *
-recursive-include requirements *
-include docker-compose.yml
-include library.py
-include config.py
+recursive-include book_task/app/templates *
+recursive-include book_task/app/static *
+recursive-include book_task/migrations *
+recursive-include book_task/requirements *
+include book_task/docker-compose.yml
+include book_task/config.py
