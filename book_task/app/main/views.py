@@ -2,24 +2,27 @@ from flask import request, current_app, render_template, redirect, url_for, flas
 from . import main
 from .. import db
 from ..models import Book, Author, Publisher
-from . forms import BookForm, AuthorForm, PublisherForm
+from . forms import BookForm, AuthorForm, PublisherForm, SearchForm
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    form = BookForm()
-    if form.validate_on_submit():
-        book = Book(title=form.title.data, year=form.year.data)
-        db.session.add(book)
-        db.session.commit()
-        return redirect(url_for('.index'))
+    form = SearchForm()
     page = request.args.get('page', 1, type=int)
     query = Book.query
+    if form.validate_on_submit():
+        page = 1
+        # book = Book(title=form.title.data, year=form.year.data)
+        # db.session.add(book)
+        # db.session.commit()
+        # return redirect(url_for('.index'))
+        if form.searched.data:
+            query = query.filter(Book.title.like(f'%{form.searched.data}%'))
     pagination = query.order_by(Book.year.desc()).paginate(
         page=page, per_page=current_app.config['BOOKS_PER_PAGE'],
         error_out=False)
     books = pagination.items
-    return render_template('index.html', form=form, books=books, pagination=pagination)
+    return render_template('index.html', search_form=form, books=books, pagination=pagination)
 
 
 def insert_update_book(form: BookForm, book: Book, msg: str, endpoint: str):

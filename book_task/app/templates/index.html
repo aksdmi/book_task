@@ -5,6 +5,9 @@
 {% block title %}Библиотека{% endblock %}
 
 {% block page_content %}
+<div>
+    {{ wtf.quick_form(search_form) }}
+</div>
 <div class="book-tabs">
     {% include '_books.html' %}
 </div>

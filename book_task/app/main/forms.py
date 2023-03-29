@@ -32,3 +32,8 @@ class PublisherForm(FlaskForm):
     name = StringField("Название", validators=[DataRequired()])
 
     submit = SubmitField('Сохранить')
+
+
+class SearchForm(FlaskForm):
+    searched = StringField('')
+    submit = SubmitField('Поиск')
